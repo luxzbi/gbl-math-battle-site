@@ -43,32 +43,34 @@
     .page { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
 
     .header {
-      position: sticky;
-      top: 0;
+      position: fixed;
+      inset: 0 0 auto;
       z-index: 100;
-      height: 52px;
+      height: 72px;
       border-bottom: 1px solid var(--border);
-      background: rgba(10,10,10,.92);
-      backdrop-filter: blur(12px);
+      background: rgba(10,10,10,.78);
+      backdrop-filter: blur(18px);
     }
-    .header-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-    .logo { color: var(--white); font-size: 1.18rem; font-weight: 800; letter-spacing: .08em; }
-    .logo span { color: var(--muted); }
-    .logo small { margin-left: 8px; color: var(--muted2); font-size: .62rem; font-weight: 500; letter-spacing: .04em; }
+    .header-inner { width: min(1180px, calc(100% - 40px)); height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand-link { display: inline-flex; align-items: center; gap: 13px; border-radius: 10px; }
+    .brand-link:focus-visible { outline: 3px solid rgba(136,124,255,.5); outline-offset: 3px; }
+    .dsgo-logo { display: block; width: 56px; height: 43px; object-fit: contain; }
+    .site-name { color: var(--muted); font-size: 12px; font-weight: 650; letter-spacing: .05em; }
     .nav { display: flex; align-items: center; gap: 8px; }
     .nav a {
-      padding: 6px 13px;
+      padding: 10px 13px;
       border: 1px solid transparent;
-      border-radius: 6px;
+      border-radius: 10px;
       color: var(--muted);
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
       transition: .18s ease;
     }
     .nav a:hover { color: var(--text); border-color: var(--border2); background: var(--bg3); }
     .nav .primary { color: #111; border-color: var(--white); background: var(--white); font-weight: 700; }
     .nav .primary:hover { color: #111; border-color: #ddd; background: #ddd; }
 
+    main { padding-top: 72px; }
     .hero { padding: 96px 0 72px; text-align: center; }
     .badge {
       display: inline-flex;
@@ -196,10 +198,39 @@
     .cta { padding: 92px 0; text-align: center; }
     .cta h2 { max-width: 700px; margin: 0 auto 14px; }
     .cta p { max-width: 600px; margin: 0 auto 27px; color: var(--muted); }
-    .scivill { min-width: min(100%, 290px); }
+    .cta-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .external-site-button { min-width: 260px; }
 
-    footer { padding: 30px 0 38px; border-top: 1px solid var(--border); color: var(--muted2); font-size: 12px; }
-    .footer-inner { display: flex; justify-content: space-between; gap: 20px; }
+    .site-footer { color: var(--muted); font-size: 12px; }
+    .footer-main {
+      display: grid;
+      width: min(1180px, calc(100% - 40px));
+      min-height: 110px;
+      margin: 0 auto;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-main .brand-link { justify-self: start; }
+    .footer-main p { letter-spacing: .08em; }
+    .footer-main > span:last-child { justify-self: end; }
+    .footer-legal {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 14px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .footer-legal-logos { display: flex; align-items: center; gap: 20px; }
+    .footer-legal-logos img { width: auto; object-fit: contain; }
+    .footer-legal-logos img:first-child { height: 72px; opacity: .72; filter: brightness(1.2); }
+    .footer-legal-logos img:last-child { height: 42px; opacity: .65; filter: brightness(1.5) contrast(1.1); }
+    .footer-legal nav { display: flex; gap: 24px; }
+    .footer-legal a { color: rgba(255,255,255,.25); font-size: 11px; transition: color .15s; }
+    .footer-legal a:hover { color: rgba(255,255,255,.6); }
 
     @media (max-width: 800px) {
       .nav a:not(.primary) { display: none; }
@@ -211,10 +242,15 @@
       .value { border-right: 0; border-bottom: 1px solid var(--border); }
       .value:last-child { border-bottom: 0; }
       .battle-grid { grid-template-columns: 1fr; }
+      .footer-main { grid-template-columns: 1fr 1fr; padding: 28px 0; }
+      .footer-main p { display: none; }
     }
     @media (max-width: 570px) {
       .page { width: min(calc(100% - 24px), var(--max)); }
-      .logo small { display: none; }
+      .header { height: 64px; }
+      .header-inner { width: min(100% - 28px, 1180px); }
+      main { padding-top: 64px; }
+      .site-name { display: none; }
       .nav .primary { display: none; }
       .hero { padding: 72px 0 54px; }
       h1 { font-size: 2.3rem; }
@@ -223,7 +259,13 @@
       .flow-row p { grid-column: 2; }
       .tool-row .tool:nth-child(n+5) { display: none; }
       section { padding: 62px 0; }
-      .footer-inner { flex-direction: column; }
+      .external-site-button { width: 100%; min-width: 0; }
+      .footer-main { width: min(100% - 28px, 1180px); grid-template-columns: 1fr; justify-items: start; }
+      .footer-main > span:last-child { justify-self: start; }
+      .footer-legal { width: min(100% - 28px, 1180px); align-items: flex-start; flex-direction: column; gap: 16px; }
+      .footer-legal nav { gap: 16px; flex-wrap: wrap; }
+      .footer-legal-logos img:first-child { height: 54px; }
+      .footer-legal-logos img:last-child { height: 34px; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -233,8 +275,11 @@
 </head>
 <body>
   <header class="header">
-    <div class="page header-inner">
-      <a class="logo" href="#top">shape<span>battle</span><small>GBL PROJECT</small></a>
+    <div class="header-inner">
+      <a class="brand-link" href="#top" aria-label="Shape Battle 홈">
+        <img class="dsgo-logo" src="https://dsgo.vercel.app/logo-dark.svg" alt="DS-GO">
+        <span class="site-name">SHAPE BATTLE</span>
+      </a>
       <nav class="nav" aria-label="주요 메뉴">
         <a href="#flow">체험 순서</a>
         <a href="#features">핵심 기능</a>
@@ -350,13 +395,33 @@
         <span class="badge">Made with Scivill</span>
         <h2>더 많은 프로젝트를 만나보세요.</h2>
         <p>Shape Battle을 만든 팀과 Scivill의 다양한 활동이 궁금하다면 공식 홈페이지를 방문해 보세요.</p>
-        <a class="button primary scivill" href="https://scivill.vercel.app" target="_blank" rel="noopener noreferrer">Scivill 홈페이지 바로가기 <span aria-hidden="true">↗</span></a>
+        <div class="cta-actions">
+          <a class="button primary external-site-button" href="https://scivill.vercel.app" target="_blank" rel="noopener noreferrer">Scivill 홈페이지 바로가기 <span aria-hidden="true">↗</span></a>
+          <a class="button external-site-button" href="https://dsgo.vercel.app" target="_blank" rel="noopener noreferrer">DS-GO 바로가기 <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="page footer-inner"><span>© 2026 Shape Battle</span><span>AI × Geometry × Real-time Battle</span></div>
+  <footer class="site-footer" id="site-footer">
+    <div class="footer-main">
+      <a class="brand-link" href="https://dsgo.vercel.app" target="_blank" rel="noopener noreferrer" aria-label="DS-GO 홈페이지">
+        <img class="dsgo-logo" src="https://dsgo.vercel.app/logo-dark.svg" alt="DS-GO">
+      </a>
+      <p>science village</p>
+      <span>© 2026 Scivill. All rights reserved.</span>
+    </div>
+    <div class="footer-legal">
+      <div class="footer-legal-logos">
+        <img src="https://dsgo.vercel.app/scivill-emblem.png" alt="Scivill">
+        <img src="https://dsgo.vercel.app/daeshin-logo.png" alt="대전대신고등학교">
+      </div>
+      <nav aria-label="법적 고지">
+        <a href="https://scivill.vercel.app/terms" target="_blank" rel="noopener noreferrer">이용약관</a>
+        <a href="https://scivill.vercel.app/privacy" target="_blank" rel="noopener noreferrer">개인정보처리방침</a>
+        <a href="https://scivill.vercel.app/licenses" target="_blank" rel="noopener noreferrer">오픈소스 라이선스</a>
+      </nav>
+    </div>
   </footer>
 </body>
 </html>
