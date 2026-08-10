@@ -83,9 +83,9 @@
     }
     .nav a span { color: var(--muted2); font: 700 10px/1 Consolas, monospace; }
     .nav a:hover { color: var(--text); border-color: var(--border2); background: var(--bg3); }
-    .nav .primary { color: #111; border-color: var(--white); background: var(--white); font-weight: 700; }
-    .nav .primary span { color: #555; }
-    .nav .primary:hover { color: #111; border-color: #ddd; background: #ddd; }
+    .nav a.active { color: #111; border-color: var(--white); background: var(--white); font-weight: 700; }
+    .nav a.active span { color: #555; }
+    .nav a.active:hover { color: #111; border-color: #ddd; background: #ddd; }
 
     main { padding-top: 96px; }
     .hero { padding: 96px 0 72px; text-align: center; }
@@ -300,7 +300,8 @@
       .header-inner { width: min(100% - 64px, 1180px); }
       main { padding-top: 84px; }
       section[id] { scroll-margin-top: 104px; }
-      .nav a:nth-child(-n+3) { display: none; }
+      .nav a { display: none; }
+      .nav a.active { display: inline-flex; }
       .hero { padding: 72px 0 54px; }
       h1 { font-size: 2.3rem; }
       .demo-window { margin-bottom: 68px; }
@@ -332,10 +333,10 @@
         <span class="site-name">SHAPE BATTLE</span>
       </a>
       <nav class="nav" aria-label="주요 메뉴">
-        <a href="#flow"><span>01</span>체험 순서</a>
+        <a class="active" href="#flow"><span>01</span>체험 순서</a>
         <a href="#features"><span>02</span>핵심 기능</a>
         <a href="#battle"><span>03</span>대전</a>
-        <a class="primary" href="#about"><span>04</span>프로젝트 소개</a>
+        <a href="#about"><span>04</span>프로젝트 소개</a>
         <a href="#fun"><span>05</span>Let's Fun</a>
       </nav>
     </div>
@@ -503,5 +504,40 @@
       </nav>
     </div>
   </footer>
+  <script>
+    const header = document.querySelector(".header");
+    const sectionLinks = [...document.querySelectorAll('.nav a[href^="#"]')];
+    const linkedSections = sectionLinks
+      .map((link) => document.querySelector(link.getAttribute("href")))
+      .filter(Boolean);
+    let navUpdatePending = false;
+
+    function updateActiveSection() {
+      const marker = window.scrollY + (header?.offsetHeight || 0) + 32;
+      let activeSection = linkedSections[0];
+
+      for (const section of linkedSections) {
+        if (section.offsetTop <= marker) activeSection = section;
+      }
+
+      for (const link of sectionLinks) {
+        const isActive = link.getAttribute("href") === `#${activeSection.id}`;
+        link.classList.toggle("active", isActive);
+        if (isActive) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      }
+      navUpdatePending = false;
+    }
+
+    function requestNavUpdate() {
+      if (navUpdatePending) return;
+      navUpdatePending = true;
+      requestAnimationFrame(updateActiveSection);
+    }
+
+    window.addEventListener("scroll", requestNavUpdate, { passive: true });
+    window.addEventListener("resize", requestNavUpdate);
+    updateActiveSection();
+  </script>
 </body>
 </html>
